@@ -10,10 +10,11 @@ import storeClp
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
+db = os.path.join( __location__,'clps' )
 
 storeClp.store()
 
-con = sqlite3.connect( os.path.join(__location__,'clps') )
+con = sqlite3.connect( db )
 con.text_factory = str
 c = con.cursor()
 c.execute('select clp from clps order by id desc limit 10')

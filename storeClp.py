@@ -10,6 +10,20 @@ def store():
 
 	__location__ = os.path.realpath(
 		os.path.join(os.getcwd(), os.path.dirname(__file__)))
+	db = os.path.join( __location__,'clps' )
+	
+	createTable = False
+	if not os.path.isfile(db):
+		createTable = True
+		
+	con = sqlite3.connect( db )
+	con.text_factory = str
+	c = con.cursor()
+	
+	if createTable:
+		c.execute('CREATE TABLE clps (id integer primary key autoincrement, datetime integer, clp text);')
+		con.commit()
+		print("Created table")
 
 	root = tk.Tk()
 	root.withdraw()
@@ -37,9 +51,6 @@ def store():
 	#truncate
 	clp = clp[:2000]
 
-	con = sqlite3.connect( os.path.join(__location__,'clps') )
-	con.text_factory = str
-	c = con.cursor()
 	c.execute('select clp from clps order by id desc limit 10')
 	clpsLast = [row[0] for row in c.fetchall()]
 
