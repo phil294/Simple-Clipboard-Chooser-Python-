@@ -31,7 +31,7 @@ def selectedClp(which=-1, event=None):
 	if(0 <= which < 10):
 		root.clipboard_clear()
 		root.clipboard_append(clpsLast[which])
-		root.after(100, root.destroy)
+		root.after(200, quit) #todo haesslich
 		root.mainloop()
 	
 oddColor = False
