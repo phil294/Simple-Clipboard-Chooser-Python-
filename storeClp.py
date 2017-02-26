@@ -5,6 +5,7 @@
 import sqlite3
 import Tkinter as tk
 import os.path
+import pprint
 
 def store():
 
@@ -32,9 +33,7 @@ def store():
 	except:
 		print("Could not get clipboard: Probably bitmap, blob etc.")
 		return
-	if not isinstance(clp, str):
-		print("Clipboard is no string")
-		return
+	clp = clp.encode("utf-8") 
 
 	#is only 1-x files? #disabled
 	"""
