@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# this is called by storeClip.sh or by the user manually
-
 import sqlite3
 import Tkinter as tk
 import os.path
