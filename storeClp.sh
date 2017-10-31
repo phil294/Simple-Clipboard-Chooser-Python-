@@ -9,7 +9,7 @@ if ! [ -f "$db" ]; then
 	echo "Created table"
 fi
 
-clp="$(xsel)"
+clp="$(xclip -sel c -o)"
 [ -z "$clp" ] && echo "clipboard empty / nonstring." && exit 0
 truncated="${clp:0:10000}"
 
