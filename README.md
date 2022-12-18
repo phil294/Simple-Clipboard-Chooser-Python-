@@ -21,3 +21,4 @@ Stores the  current clpboard every minute.
 Choose from your previous 10 clipboards by calling storeClp.py, e.g. with a shortcut.
 
 edit 20170919: added bash scripts. can be used instead of the python scripts.
+edit 20221218: added yet another alternative, an autohotkey script. can be used on linux with [ahk_x11](https://github.com/phil294/AHK_X11).
