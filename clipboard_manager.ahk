@@ -1,18 +1,30 @@
 ; Tested on and developed for Linux with AHK_X11. Almost compatible wiht Windows too, but in that case sqlite invocation does not work and should rather use a proper library instead of `RunWait, sqlite3` stuff
 
-if clps_db =
-{
-	msgbox variable clps_db needs to be set
-	exitapp 1
-}
-clps_entry_show_length = 50
+; To use, #Include this script an call GoSub, init_clipboard_manager
 
-~^x up::
-~^c up::
-	settimer, new_clipboard, 1000 ; debounce
+Return
+
+init_clipboard_manager:
+	if clps_db =
+	{
+		msgbox variable clps_db needs to be set
+		exitapp 1
+	}
+	clps_entry_show_length = 50
+
+	Hotkey, ~^x up, clipboard_manager_store
+	Hotkey, ~^c up, clipboard_manager_store
+	Hotkey, ~^!c up, clipboard_manager_store
+	Hotkey, ~^+c up, clipboard_manager_store
+
+	Hotkey, ^!+c, clipboard_manager_select
+Return
+
+clipboard_manager_store:
+	settimer, clipboard_manager_new_clipboard, 1000 ; debounce
 	return
-	new_clipboard:
-	settimer, new_clipboard, off
+	clipboard_manager_new_clipboard:
+	settimer, clipboard_manager_new_clipboard, off
 	clp = %clipboard%
 	if clp = ; picture, file, ..
 		return
@@ -37,11 +49,14 @@ clps_entry_show_length = 50
 	if already_contained = 1
 		echo clipboard %clp% already in previous %clps_entry_show_length% clps contained
 	else
+	{
+		run notify-send u_%clp%_u
 		runwait sqlite3 -init /dev/null "%clps_db%" "insert into clps(datetime`, clp) values (datetime('now')`, '%clp%');"
+	}
 	clp =
 return
 
-^!+c::
+clipboard_manager_select:
 	newline_mock = b926ac9569e69458a5c676eecf83bbf21
 	runwait sqlite3 -init /dev/null "%clps_db%" "SELECT replace(clp`, char(10)`, '%newline_mock%') FROM clps order by id desc limit %clps_entry_show_length%",,,, clps_last
 	txt = Type a number + SPACE or ESCAPE to cancel.`n`n
